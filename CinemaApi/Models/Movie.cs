@@ -1,4 +1,6 @@
-﻿namespace CinemaApi.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace CinemaApi.Models
 {
     public class Movie : BaseEntity
     {
@@ -7,13 +9,15 @@
         public DateTime ReleaseDate { get; set; }
         public int DurationMinutes { get; set; }
 
+        [ForeignKey("Genre")]
         public int GenreId { get; set; }
         public Genre Genre { get; set; }
 
+        [ForeignKey("Director")]
         public int DirectorId { get; set; }
         public Director Director { get; set; }
 
-        public string ImdbRating { get; set; }
+        public double? ImdbRating { get; set; }
         public ICollection<MovieActor> MovieActors { get; set; }
     }
 }

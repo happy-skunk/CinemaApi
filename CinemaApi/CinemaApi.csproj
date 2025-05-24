@@ -17,17 +17,10 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
-    <Folder Include="DTOs\Movie\" />
-    <Folder Include="DTOs\Genre\" />
-    <Folder Include="DTOs\Director\" />
-    <Folder Include="DTOs\Actor\" />
-    <Folder Include="DTOs\NewFolder\" />
     <Folder Include="Cache\" />
-    <Folder Include="Data\" />
     <Folder Include="Decorator\" />
     <Folder Include="Mapper\" />
     <Folder Include="Services\" />
-    <Folder Include="Repository\" />
   </ItemGroup>
 
 </Project>

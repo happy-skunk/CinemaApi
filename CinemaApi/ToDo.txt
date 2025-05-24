@@ -1,0 +1,8 @@
+For Later:
+Make Movie - Genre M-M, Movie - Director M-M
+(
+Crete MovieGenre.cs MovieDirector.cs
+add - Dbset for MovieGenre, Dbset for MovieDirector
+)
+
+Help on Movie and Actor View Dtos
