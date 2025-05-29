@@ -8,6 +8,6 @@
         public int DurationMinutes { get; set; }
         public int GenreId { get; set; }
         public int DirectorId { get; set; }
-
+        public List<int> ActorIds { get; set; }
     }
 }

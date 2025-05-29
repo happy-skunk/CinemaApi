@@ -19,8 +19,6 @@
     <Folder Include="Controllers\" />
     <Folder Include="Cache\" />
     <Folder Include="Decorator\" />
-    <Folder Include="Mapper\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>
