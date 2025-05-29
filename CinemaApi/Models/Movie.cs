@@ -17,7 +17,7 @@ namespace CinemaApi.Models
         public int DirectorId { get; set; }
         public Director Director { get; set; }
 
-        public double? ImdbRating { get; set; }
+        public double? Rating { get; set; }
         public ICollection<MovieActor> MovieActors { get; set; }
     }
 }

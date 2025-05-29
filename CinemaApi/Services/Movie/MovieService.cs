@@ -1,6 +1,5 @@
 ﻿using CinemaApi.DTOs.Movie;
 using CinemaApi.Mapper;
-using CinemaApi.Models;
 using CinemaApi.Repository.Specific;
 
 namespace CinemaApi.Services.Movie
@@ -42,6 +41,7 @@ namespace CinemaApi.Services.Movie
             movie.Description = dto.Description;
             movie.ReleaseDate = dto.ReleaseDate;
             movie.DurationMinutes = dto.DurationMinutes;
+            movie.Rating = dto.Rating;
             movie.DirectorId = dto.DirectorId;
             movie.GenreId = dto.GenreId;
 
@@ -82,7 +82,7 @@ namespace CinemaApi.Services.Movie
 
         public async Task<IEnumerable<MovieViewDto>> GetMoviesByRatingRangeAsync(double min, double max)
         {
-            var movies = await _movieRepo.GetMoviesByDirectorNameAsync(Double);
+            var movies = await _movieRepo.GetMoviesByRatingRangeAsync(min, max);
             if (movies == null) return null;
 
             var result = movies.Select(MovieMapper.ToMovieViewDto).ToList();

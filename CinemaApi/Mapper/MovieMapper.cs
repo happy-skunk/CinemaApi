@@ -13,6 +13,7 @@ namespace CinemaApi.Mapper
                 Description = dto.Description,
                 ReleaseDate = dto.ReleaseDate,
                 DurationMinutes = dto.DurationMinutes,
+                Rating = dto?.Rating,
                 GenreId = dto.GenreId,
                 DirectorId = dto.DirectorId,
                 MovieActors = dto.ActorIds?.Select(actorId => new MovieActor
@@ -31,6 +32,7 @@ namespace CinemaApi.Mapper
                 Description = dto.Description,
                 ReleaseDate = dto.ReleaseDate,
                 DurationMinutes = dto.DurationMinutes,
+                Rating = dto?.Rating,
                 GenreId = dto.GenreId,
                 DirectorId = dto.DirectorId,
                 MovieActors = dto.ActorIds?.Select(actorId => new MovieActor
@@ -48,10 +50,10 @@ namespace CinemaApi.Mapper
                 Description = movie.Description,
                 ReleaseDate = movie.ReleaseDate,
                 DurationMinutes = movie.DurationMinutes,
+                Rating = movie?.Rating,
                 Genre = movie.Genre?.Name,
                 Director = movie.Director?.FullName,
                 Actors = movie.MovieActors?.Select(ma => ma.Actor?.FullName).ToList(),
-                ImdbRating = movie.ImdbRating
             };
         }
     }

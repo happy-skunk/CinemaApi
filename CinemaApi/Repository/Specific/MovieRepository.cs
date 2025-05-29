@@ -7,7 +7,7 @@ namespace CinemaApi.Repository.Specific
     public class MovieRepository : Repository<Movie>, IMovieRepository
     {
         private readonly AppDbContext _context;
-
+        
         public MovieRepository(AppDbContext context) : base(context)
         {
             _context = context;
@@ -60,7 +60,7 @@ namespace CinemaApi.Repository.Specific
         public async Task<IEnumerable<Movie>> GetMoviesByRatingRangeAsync(double min, double max)
         {
             return await _context.Movies
-                .Where(m => m.ImdbRating >= min && m.ImdbRating <= max)
+                .Where(m => m.Rating != null && m.Rating >= min && m.Rating <= max)
                 .ToListAsync();
         }
     }
