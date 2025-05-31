@@ -108,7 +108,7 @@ namespace CinemaApi.Migrations
                     b.Property<int>("GenreId")
                         .HasColumnType("int");
 
-                    b.Property<double?>("ImdbRating")
+                    b.Property<double?>("Rating")
                         .HasColumnType("float");
 
                     b.Property<DateTime>("ReleaseDate")

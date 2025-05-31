@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CinemaApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250524062741_init")]
+    [Migration("20250531091750_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -111,7 +111,7 @@ namespace CinemaApi.Migrations
                     b.Property<int>("GenreId")
                         .HasColumnType("int");
 
-                    b.Property<double?>("ImdbRating")
+                    b.Property<double?>("Rating")
                         .HasColumnType("float");
 
                     b.Property<DateTime>("ReleaseDate")

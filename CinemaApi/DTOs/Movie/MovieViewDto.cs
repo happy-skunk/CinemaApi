@@ -7,7 +7,6 @@
         public string Description { get; set; }
         public DateTime ReleaseDate { get; set; }
         public int DurationMinutes { get; set; }
-
         public double? Rating { get; set; }
         public string Genre { get; set; }
         public string Director { get; set; }

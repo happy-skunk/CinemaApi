@@ -66,7 +66,7 @@ namespace CinemaApi.Migrations
                     DurationMinutes = table.Column<int>(type: "int", nullable: false),
                     GenreId = table.Column<int>(type: "int", nullable: false),
                     DirectorId = table.Column<int>(type: "int", nullable: false),
-                    ImdbRating = table.Column<double>(type: "float", nullable: true)
+                    Rating = table.Column<double>(type: "float", nullable: true)
                 },
                 constraints: table =>
                 {
