@@ -46,6 +46,7 @@ namespace CinemaApi.Mapper
         {
             return new MovieViewDto
             {
+                Id = movie.Id,
                 Title = movie.Title,
                 Description = movie.Description,
                 ReleaseDate = movie.ReleaseDate,

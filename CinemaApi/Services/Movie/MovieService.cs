@@ -1,5 +1,6 @@
 ﻿using CinemaApi.DTOs.Movie;
 using CinemaApi.Mapper;
+using CinemaApi.Models;
 using CinemaApi.Repository.Specific;
 
 namespace CinemaApi.Services.Movie
@@ -44,6 +45,10 @@ namespace CinemaApi.Services.Movie
             movie.Rating = dto.Rating;
             movie.DirectorId = dto.DirectorId;
             movie.GenreId = dto.GenreId;
+            movie.MovieActors = dto.ActorIds?.Select(actorId => new MovieActor
+            {
+                ActorId = actorId
+            }).ToList();
 
             await _movieRepo.Update(movie);
         }

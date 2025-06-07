@@ -8,47 +8,47 @@ namespace CinemaApi.Controllers
     [ApiController]
     public class DirectorController : ControllerBase
     {
-        private readonly IDirectorService _DirectorService;
+        private readonly IDirectorService _directorService;
 
         public DirectorController(IDirectorService directorService)
         {
-            _DirectorService = directorService;
+            _directorService = directorService;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddDirector([FromBody] DirectorCreateDto dto)
+        {
+            var id = await _directorService.CreateDirectorAsync(dto);
+            return CreatedAtAction(nameof(GetDirector), new { id }, dto);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetDirectors()
         {
-            var directors = await _DirectorService.GetAllDirectorsAsync();
+            var directors = await _directorService.GetAllDirectorsAsync();
             return Ok(directors);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetDirector(int id)
         {
-            var director = await _DirectorService.GetDirectorByIdAsync(id);
+            var director = await _directorService.GetDirectorByIdAsync(id);
             if (director == null) return NotFound();
             return Ok(director);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> AddDirector([FromBody] DirectorCreateDto dto)
-        {
-            var id = await _DirectorService.CreateDirectorAsync(dto);
-            return CreatedAtAction(nameof(GetDirector), new { id }, dto);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateDirector(int id, [FromBody] DirectorUpdateDto dto)
         {
             if (id != dto.Id) return BadRequest();
-            await _DirectorService.UpdateDirectorAsync(dto);
+            await _directorService.UpdateDirectorAsync(dto);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDirector(int id)
         {
-            var deleted = await _DirectorService.DeleteDirectorAsync(id);
+            var deleted = await _directorService.DeleteDirectorAsync(id);
             if (deleted == null) return NotFound();
             return Ok(deleted);
         }

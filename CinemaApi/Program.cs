@@ -8,9 +8,19 @@ using CinemaApi.Services.Director;
 using CinemaApi.Services.Genre;
 using CinemaApi.Services.Movie;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Protocol;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Add CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 // Add DB context
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -34,7 +44,7 @@ builder.Services.AddSingleton<ICacheService, CacheService>();
 
 // Register services
 builder.Services.AddScoped<MovieService>();
-builder.Services.AddScoped<IMovieService>(provider => 
+builder.Services.AddScoped<IMovieService>(provider =>
 {
     var inner = provider.GetRequiredService<MovieService>();
     var cache = provider.GetRequiredService<ICacheService>();
@@ -44,14 +54,12 @@ builder.Services.AddScoped<IActorService, ActorService>();
 builder.Services.AddScoped<IGenreService, GenreService>();
 builder.Services.AddScoped<IDirectorService, DirectorService>();
 
-
 // Swagger setup
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Dev only Swagger
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -59,6 +67,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAll");
+
 app.UseAuthorization();
 app.MapControllers();
+
 app.Run();
