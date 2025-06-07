@@ -37,10 +37,9 @@ namespace CinemaApi.Controllers
             return Ok(movie);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateMovie(int id, [FromBody] MovieUpdateDto dto)
+        [HttpPut]
+        public async Task<IActionResult> UpdateMovie([FromBody] MovieUpdateDto dto)
         {
-            if (id != dto.Id) return BadRequest();
             await _movieService.UpdateMovieAsync(dto);
             return NoContent();
         }

@@ -37,10 +37,9 @@ namespace CinemaApi.Controllers
             return Ok(director);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateDirector(int id, [FromBody] DirectorUpdateDto dto)
+        [HttpPut)]
+        public async Task<IActionResult> UpdateDirector([FromBody] DirectorUpdateDto dto)
         {
-            if (id != dto.Id) return BadRequest();
             await _directorService.UpdateDirectorAsync(dto);
             return NoContent();
         }

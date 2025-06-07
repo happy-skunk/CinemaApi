@@ -37,10 +37,9 @@ namespace CinemaApi.Controllers
             return Ok(genre);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateGenre(int id, [FromBody] GenreUpdateDto dto)
+        [HttpPut]
+        public async Task<IActionResult> UpdateGenre([FromBody] GenreUpdateDto dto)
         {
-            if (id != dto.Id) return BadRequest();
             await _genreService.UpdateGenreAsync(dto);
             return NoContent();
         }

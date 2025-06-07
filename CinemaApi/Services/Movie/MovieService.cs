@@ -1,4 +1,5 @@
 ﻿using CinemaApi.DTOs.Movie;
+using CinemaApi.Logger;
 using CinemaApi.Mapper;
 using CinemaApi.Models;
 using CinemaApi.Repository.Specific;
@@ -8,10 +9,12 @@ namespace CinemaApi.Services.Movie
     public class MovieService : IMovieService
     {
         private readonly IMovieRepository _movieRepo;
+        private readonly Logging _logger;
 
-        public MovieService(IMovieRepository movieRepo)
+        public MovieService(IMovieRepository movieRepo, Logging logger)
         {
             _movieRepo = movieRepo;
+            _logger = logger;
         }
 
         public async Task<int> CreateMovieAsync(MovieCreateDto dto)
@@ -35,22 +38,29 @@ namespace CinemaApi.Services.Movie
 
         public async Task UpdateMovieAsync(MovieUpdateDto dto)
         {
-            var movie = await _movieRepo.GetById(dto.Id);
-            if (movie == null) return;
-
-            movie.Title = dto.Title;
-            movie.Description = dto.Description;
-            movie.ReleaseDate = dto.ReleaseDate;
-            movie.DurationMinutes = dto.DurationMinutes;
-            movie.Rating = dto.Rating;
-            movie.DirectorId = dto.DirectorId;
-            movie.GenreId = dto.GenreId;
-            movie.MovieActors = dto.ActorIds?.Select(actorId => new MovieActor
+            try
             {
-                ActorId = actorId
-            }).ToList();
+                var movie = await _movieRepo.GetById(dto.Id);
+                if (movie == null) return;
 
-            await _movieRepo.Update(movie);
+                movie.Title = dto.Title;
+                movie.Description = dto.Description;
+                movie.ReleaseDate = dto.ReleaseDate;
+                movie.DurationMinutes = dto.DurationMinutes;
+                movie.Rating = dto.Rating;
+                movie.DirectorId = dto.DirectorId;
+                movie.GenreId = dto.GenreId;
+                movie.MovieActors = dto.ActorIds?.Select(actorId => new MovieActor
+                {
+                    ActorId = actorId
+                }).ToList();
+
+                await _movieRepo.Update(movie);
+            }
+            catch (Exception ex) 
+            {
+                _logger.Log(ex.ToString());
+            }
         }
 
         public async Task<MovieDeleteDto> DeleteMovieAsync(int id)
@@ -78,7 +88,7 @@ namespace CinemaApi.Services.Movie
 
         public async Task<IEnumerable<MovieViewDto>> GetMoviesByGenreNameAsync(string genreName)
         {
-            var movies = await _movieRepo.GetMoviesByDirectorNameAsync(genreName);
+            var movies = await _movieRepo.GetMoviesByGenreNameAsync(genreName);
             if (movies == null) return null;
 
             var result = movies.Select(MovieMapper.ToMovieViewDto).ToList();
@@ -96,7 +106,7 @@ namespace CinemaApi.Services.Movie
 
         public async Task<IEnumerable<MovieViewDto>> GetMoviesByActorNameAsync(string actorName)
         {
-            var movies = await _movieRepo.GetMoviesByDirectorNameAsync(actorName);
+            var movies = await _movieRepo.GetMoviesByActorNameAsync(actorName);
             if (movies == null) return null;
 
             var result = movies.Select(MovieMapper.ToMovieViewDto).ToList();

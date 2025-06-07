@@ -37,10 +37,9 @@ namespace CinemaApi.Controllers
             return Ok(actor);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateActor(int id, [FromBody] ActorUpdateDto dto)
+        [HttpPut]
+        public async Task<IActionResult> UpdateActor([FromBody] ActorUpdateDto dto)
         {
-            if (id != dto.Id) return BadRequest();
             await _actorService.UpdateActorAsync(dto);
             return NoContent();
         }

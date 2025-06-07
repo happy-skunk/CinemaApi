@@ -1,6 +1,7 @@
 using CinemaApi.Cache;
 using CinemaApi.Data;
 using CinemaApi.Decorator;
+using CinemaApi.Logger;
 using CinemaApi.Repository;
 using CinemaApi.Repository.Specific;
 using CinemaApi.Services.Actor;
@@ -41,6 +42,9 @@ builder.Services.AddScoped<IDirectorRepository, DirectorRepository>();
 // Register Cache
 builder.Services.AddMemoryCache();
 builder.Services.AddSingleton<ICacheService, CacheService>();
+
+// Register Logging
+builder.Services.AddSingleton <ILogging, Logging>();
 
 // Register services
 builder.Services.AddScoped<MovieService>();
