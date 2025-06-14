@@ -1,8 +1,10 @@
 ﻿using CinemaApi.DTOs.Movie;
+using CinemaApi.Exceptions;
 using CinemaApi.Logger;
 using CinemaApi.Mapper;
 using CinemaApi.Models;
 using CinemaApi.Repository.Specific;
+using Humanizer;
 
 namespace CinemaApi.Services.Movie
 {
@@ -26,14 +28,26 @@ namespace CinemaApi.Services.Movie
 
         public async Task<IEnumerable<MovieViewDto>> GetAllMoviesAsync()
         {
-            var movies = await _movieRepo.GetAllIncludingAsync();
-            return movies.Select(MovieMapper.ToMovieViewDto).ToList();
+            try
+            {
+                var movies = await _movieRepo.GetAllIncludingAsync();
+                return movies.Select(MovieMapper.ToMovieViewDto).ToList();
+            }
+            catch (Exception ex) 
+            {
+                _logger.Log(ex.ToString());
+                throw new GetAllMoviesFailedException();
+            }
         }
 
         public async Task<MovieViewDto> GetMovieByIdAsync(int id)
         {
             var movie = await _movieRepo.GetByIdIncludingAsync(id);
-            return movie?.ToMovieViewDto();
+            if (movie == null)
+                throw new MovieNotFoundException(id);
+
+            return movie.ToMovieViewDto();
+
         }
 
         public async Task UpdateMovieAsync(MovieUpdateDto dto)
@@ -41,7 +55,8 @@ namespace CinemaApi.Services.Movie
             try
             {
                 var movie = await _movieRepo.GetById(dto.Id);
-                if (movie == null) return;
+                if (movie == null)
+                    throw new MovieNotFoundException(dto.Id);
 
                 movie.Title = dto.Title;
                 movie.Description = dto.Description;
@@ -57,60 +72,80 @@ namespace CinemaApi.Services.Movie
 
                 await _movieRepo.Update(movie);
             }
-            catch (Exception ex) 
+            catch (MovieNotFoundException) { throw; }
+            catch (Exception ex)
             {
                 _logger.Log(ex.ToString());
+                throw new MovieUpdateFailedException(dto.Id);
             }
         }
 
         public async Task<MovieDeleteDto> DeleteMovieAsync(int id)
         {
             var movie = await _movieRepo.GetById(id);
-            if (movie == null) return null;
+            if (movie == null)
+                throw new MovieNotFoundException(id);
 
             await _movieRepo.Delete(id);
 
-            return new MovieDeleteDto
-            {
-                Id = movie.Id,
-            };
+            return new MovieDeleteDto { Id = movie.Id };
         }
 
 
         public async Task<IEnumerable<MovieViewDto>> GetMoviesByDirectorNameAsync(string directorName)
         {
-            var movies = await _movieRepo.GetMoviesByDirectorNameAsync(directorName);
-            if (movies == null) return null;
-
-            var result = movies.Select(MovieMapper.ToMovieViewDto).ToList();
-            return result;
+            try
+            {
+                var movies = await _movieRepo.GetMoviesByDirectorNameAsync(directorName);
+                return movies.Select(MovieMapper.ToMovieViewDto).ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex.ToString());
+                throw new GetAllMoviesFailedException();
+            }
         }
 
         public async Task<IEnumerable<MovieViewDto>> GetMoviesByGenreNameAsync(string genreName)
         {
-            var movies = await _movieRepo.GetMoviesByGenreNameAsync(genreName);
-            if (movies == null) return null;
-
-            var result = movies.Select(MovieMapper.ToMovieViewDto).ToList();
-            return result;
+            try
+            {
+                var movies = await _movieRepo.GetMoviesByGenreNameAsync(genreName);
+                return movies.Select(MovieMapper.ToMovieViewDto).ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex.ToString());
+                throw new GetAllMoviesFailedException();
+            }
         }
 
         public async Task<IEnumerable<MovieViewDto>> GetMoviesByRatingRangeAsync(double min, double max)
         {
-            var movies = await _movieRepo.GetMoviesByRatingRangeAsync(min, max);
-            if (movies == null) return null;
-
-            var result = movies.Select(MovieMapper.ToMovieViewDto).ToList();
-            return result;
+            try
+            {
+                var movies = await _movieRepo.GetMoviesByRatingRangeAsync(min, max);
+                return movies.Select(MovieMapper.ToMovieViewDto).ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex.ToString());
+                throw new GetAllMoviesFailedException();
+            }
         }
 
         public async Task<IEnumerable<MovieViewDto>> GetMoviesByActorNameAsync(string actorName)
         {
-            var movies = await _movieRepo.GetMoviesByActorNameAsync(actorName);
-            if (movies == null) return null;
-
-            var result = movies.Select(MovieMapper.ToMovieViewDto).ToList();
-            return result;
+            try
+            {
+                var movies = await _movieRepo.GetMoviesByActorNameAsync(actorName);
+                return movies.Select(MovieMapper.ToMovieViewDto).ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex.ToString());
+                throw new GetAllMoviesFailedException();
+            }
         }
     }
 }
